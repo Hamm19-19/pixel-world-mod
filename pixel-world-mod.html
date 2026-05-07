@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel World Mod</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-dark: #0a0015;
+    --purple-mid: #1a0035;
+    --purple-accent: #7c3aed;
+    --purple-bright: #a855f7;
+    --purple-glow: #c084fc;
+    --teal: #06b6d4;
+    --teal-dim: #0e7490;
+    --gold: #f59e0b;
+    --gold-dim: #92400e;
+    --text: #f1e8ff;
+    --text-muted: #a78bca;
+    --border: rgba(168,85,247,0.2);
+    --discord: #5865F2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--purple-dark);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    text-align: center;
+    padding: 3.5rem 2rem 3rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(124,58,237,0.15) 0%, rgba(10,0,21,0.4) 60%);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 200px;
+    background: radial-gradient(ellipse, rgba(168,85,247,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(124,58,237,0.3);
+    border: 1px solid rgba(168,85,247,0.4);
+    color: #c084fc;
+    font-size: 11px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    border-radius: 30px;
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+  }
+
+  .badge-top span {
+    width: 6px; height: 6px;
+    background: #a855f7;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px #a855f7;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 48px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #a855f7, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+
+  /* ─── CARDS ─── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    background: rgba(26,0,53,0.7);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(168,85,247,0.5);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 14px 14px 0 0;
+  }
+  .card.purple::before { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+  .card.teal::before   { background: linear-gradient(90deg, #0e7490, #06b6d4); }
+  .card.gold::before   { background: linear-gradient(90deg, #92400e, #f59e0b); }
+
+  .card-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+  }
+  .card.purple .card-label { color: #a855f7; }
+  .card.teal   .card-label { color: #06b6d4; }
+  .card.gold   .card-label { color: #f59e0b; }
+
+  .card p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* Feature pills */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .pill {
+    display: inline-block;
+    background: rgba(6,182,212,0.1);
+    border: 1px solid rgba(6,182,212,0.25);
+    color: #67e8f9;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 11px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Price */
+  .price-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: #f59e0b;
+    line-height: 1;
+    margin-bottom: 4px;
+    text-shadow: 0 0 20px rgba(245,158,11,0.3);
+  }
+
+  .price-unit {
+    font-size: 13px;
+    color: #78716c;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .price-note {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion {
+    background: linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(6,182,212,0.06) 100%);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .conclusion-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    filter: drop-shadow(0 0 10px rgba(245,158,11,0.5));
+  }
+
+  .conclusion-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a855f7;
+    margin-bottom: 0.5rem;
+  }
+
+  .conclusion p {
+    font-size: 16px;
+    color: #d4c5f0;
+    line-height: 1.7;
+  }
+
+  .users-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(124,58,237,0.3);
+    border: 1px solid rgba(168,85,247,0.35);
+    color: #c084fc;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 30px;
+    margin-top: 0.9rem;
+  }
+
+  .users-dot {
+    width: 7px; height: 7px;
+    background: #a855f7;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #a855f7;
+  }
+
+  /* ─── FOOTER / DISCORD ─── */
+  .footer {
+    text-align: center;
+    animation: fadeUp 0.7s 0.5s ease both;
+  }
+
+  .discord-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--discord);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 13px 30px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .discord-btn:hover {
+    background: #4752c4;
+    transform: translateY(-2px);
+  }
+
+  .discord-btn svg {
+    width: 22px; height: 22px;
+    fill: #fff;
+    flex-shrink: 0;
+  }
+
+  .footer-note {
+    font-size: 13px;
+    color: #4b3d6e;
+    margin-top: 0.6rem;
+  }
+
+  /* ─── ANIMATION ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 32px; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="badge-top"><span></span> Top Mod — Pixel World</div>
+    <h1>Pixel World <em>Mod</em></h1>
+    <p class="hero-sub">This cheat has an enormous number of features and is currently one of the top mods in Pixel World.</p>
+  </header>
+
+  <!-- 3 CARDS -->
+  <section class="cards">
+
+    <!-- Description -->
+    <div class="card purple">
+      <div class="card-label">Description</div>
+      <p>A powerful and feature-rich cheat designed for Pixel World. Built for maximum performance and ease of use — ranked among the top mods in the community.</p>
+    </div>
+
+    <!-- Features -->
+    <div class="card teal">
+      <div class="card-label">Features</div>
+      <div class="pills">
+        <span class="pill">Auto Deep Nether</span>
+        <span class="pill">Auto Nether</span>
+        <span class="pill">Auto Mining</span>
+        <span class="pill">Auto PNB</span>
+        <span class="pill">Auto Fishing</span>
+        <span class="pill">+ More Features</span>
+      </div>
+    </div>
+
+    <!-- Price -->
+    <div class="card gold">
+      <div class="card-label">Price</div>
+      <div class="price-num">10,000</div>
+      <div class="price-unit">Byte Coin</div>
+      <p class="price-note">One-time payment — full access to all features included.</p>
+    </div>
+
+  </section>
+
+  <!-- CONCLUSION -->
+  <section class="conclusion">
+    <div class="conclusion-icon">⭐</div>
+    <div>
+      <div class="conclusion-label">Verdict</div>
+      <p>This cheat is absolutely worth buying. It has been trusted and used by over <strong style="color:#e9d5ff;">2,000+ players</strong>, and comes packed with a complete set of features that cover everything you need.</p>
+      <div class="users-tag">
+        <span class="users-dot"></span>
+        2,000+ Active Users
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCORD -->
+  <footer class="footer">
+    <a class="discord-btn" href="#" onclick="alert('Discord link coming soon!'); return false;">
+      <svg viewBox="0 0 127.14 96.36" xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;fill:#fff;flex-shrink:0">
+        <path d="M107.7 8.07A105.15 105.15 0 0081.47 0a72.06 72.06 0 00-3.36 6.83 97.68 97.68 0 00-29.11 0A72.37 72.37 0 0045.64 0a105.89 105.89 0 00-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0032.17 16.15 77.7 77.7 0 006.89-11.11 68.42 68.42 0 01-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0064.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 01-10.87 5.19 77 77 0 006.89 11.1 105.25 105.25 0 0032.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15zM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69z"/>
+      </svg>
+      Join Our Discord
+    </a>
+    <p class="footer-note">Discord link will be added soon</p>
+  </footer>
+
+</div>
+</body>
+</html>
